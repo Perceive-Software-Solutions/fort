@@ -7,9 +7,9 @@ import 'package:redux_persist/redux_persist.dart';
 import 'package:redux_persist_flutter/redux_persist_flutter.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
-part 'local_state/fort_event.dart';
-part 'local_state/fort_state.dart';
-part 'local_state/tower.dart';
+part 'src/fort_event.dart';
+part 'src/fort_state.dart';
+part 'src/tower.dart';
 
 class Fort {
 
