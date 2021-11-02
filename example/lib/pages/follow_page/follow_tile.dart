@@ -77,7 +77,7 @@ class FollowTile extends StatelessWidget {
       elevation: 1,
       color: Colors.yellow[50],
       child: ValueListenableBuilder<Box<User>>(
-        valueListenable: ConcreteFort().getStoreListener(FortKey.USER_KEY, [userID]),
+        valueListenable: Fort().getStoreListener(FortKey.USER_KEY, [userID]),
         builder: (context, box, child) {
           User? user = box.get(userID);
           return buildTile(context, user);

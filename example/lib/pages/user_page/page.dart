@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:fort/fort.dart';
 import 'package:fort_example/api/mock_api.dart';
 import 'package:fort_example/models/user.dart';
-import 'package:fort_example/state/concrete_fort.dart';
 import 'package:fort_example/state/fort_keys.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -22,7 +22,7 @@ class UserPage extends StatelessWidget {
       ),
       body: Center(
         child: ValueListenableBuilder<Box<User>>(
-          valueListenable: ConcreteFort().getStoreListener(FortKey.USER_KEY, [userID]),
+          valueListenable: Fort().getStoreListener(FortKey.USER_KEY, [userID]),
           builder: (context, userBox, child) {
             User? user = userBox.get(userID);
 

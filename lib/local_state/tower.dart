@@ -2,7 +2,6 @@
 
 part of '../fort.dart';
 
-
 typedef SerializationFunction<T extends FortState> = T? Function(dynamic json);
 
 class Tower<T extends FortState> extends Store<T>{
@@ -26,7 +25,13 @@ class Tower<T extends FortState> extends Store<T>{
         storage: FlutterStorage(location: FlutterSaveLocation.sharedPreferences),
         serializer: JsonSerializer(serializer)
       );
+
+      //Add persistor middleware
+      middleware = [persistor.createMiddleware(), ...middleware];
     }
+
+    //Adds thunk middleware
+    middleware.add(thunkMiddleware);
 
     //Default event reducer
     return Tower._(
@@ -81,6 +86,4 @@ class Tower<T extends FortState> extends Store<T>{
     }
 
   }
-
-
 }

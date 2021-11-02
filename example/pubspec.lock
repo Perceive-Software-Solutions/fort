@@ -155,13 +155,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
   dart_style:
     dependency: transitive
     description:
@@ -210,7 +203,7 @@ packages:
     source: hosted
     version: "1.0.4"
   flutter_redux:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_redux
       url: "https://pub.dartlang.org"
@@ -255,14 +248,14 @@ packages:
     source: hosted
     version: "2.1.0"
   hive:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: hive
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
   hive_flutter:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: hive_flutter
       url: "https://pub.dartlang.org"
@@ -444,21 +437,21 @@ packages:
     source: hosted
     version: "5.0.0"
   redux_persist:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: redux_persist
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.0"
   redux_persist_flutter:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: redux_persist_flutter
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.0"
   redux_thunk:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: redux_thunk
       url: "https://pub.dartlang.org"

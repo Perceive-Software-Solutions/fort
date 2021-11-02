@@ -19,7 +19,7 @@ enum LoadState {
   ERROR
 }
 
-class HomePageState{
+class HomePageState extends FortState{
 
   final List<String> userIDs;
   final LoadState loadState;
@@ -41,6 +41,7 @@ class HomePageState{
     );
   }
 
+  @override
   dynamic toJson() => {
     'userIDs': userIDs,
     'loadState': LoadState.values.indexOf(loadState),
@@ -60,7 +61,7 @@ class HomePageState{
  
 */
 
-abstract class HomePageEvent{}
+abstract class HomePageEvent extends FortEvent{}
 
 class SetState extends HomePageEvent{
 
@@ -106,7 +107,7 @@ LoadUsersEvent(Store<HomePageState> store) async {
   Api.getUsers().then((users) async {
     store.dispatch(_UsersLoaded(users.map<String>((u) => u.id!).toList()));
 
-    Box<User> userStore = await ConcreteFort().storeBox<User>(FortKey.USER_KEY);
+    Box<User> userStore = await Fort().storeBox<User>(FortKey.USER_KEY);
     for (var user in users) {
       userStore.put(user.id, user);
     }

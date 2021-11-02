@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:fort/fort.dart';
+
 import 'package:fort_example/models/user.dart';
 import 'package:fort_example/pages/follow_page/page.dart';
 import 'package:fort_example/pages/home_page/page.dart';
-import 'package:fort_example/state/concrete_fort.dart';
 import 'package:fort_example/state/fort_keys.dart';
 
 void main() async {
-  await ConcreteFort().register(FortKey.USER_KEY, UserAdapter());
+  await Fort().register(FortKey.USER_KEY, UserAdapter());
   runApp(const MyApp());
 }
 

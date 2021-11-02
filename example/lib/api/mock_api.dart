@@ -1,5 +1,5 @@
+import 'package:fort/fort.dart';
 import 'package:fort_example/models/user.dart';
-import 'package:fort_example/state/concrete_fort.dart';
 import 'package:fort_example/state/fort_keys.dart';
 import 'package:hive/hive.dart';
 
@@ -81,7 +81,7 @@ class Api{
     await userDBBox.close();
 
     //Local State
-    Box<User> userStore = await ConcreteFort().storeBox(FortKey.USER_KEY);
+    Box<User> userStore = await Fort().storeBox(FortKey.USER_KEY);
     userStore.put(userID, apiUser);
 
     //Return
@@ -115,7 +115,7 @@ class Api{
     await userDBBox.close();
 
     //Local State
-    Box<User> userStore = await ConcreteFort().storeBox(FortKey.USER_KEY);
+    Box<User> userStore = await Fort().storeBox(FortKey.USER_KEY);
     userStore.put(userID, apiUser);
 
     //Return

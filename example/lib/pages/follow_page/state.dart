@@ -18,7 +18,7 @@ enum LoadState {
   ERROR
 }
 
-class FollowPageState{
+class FollowPageState extends FortState{
 
   final List<String> userIDs;
   final LoadState loadState;
@@ -31,6 +31,12 @@ class FollowPageState{
   });
 
   factory FollowPageState.innitial() => FollowPageState(userIDs: [],);
+
+  @override
+  toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
 
 }
 
@@ -45,7 +51,7 @@ class FollowPageState{
  
 */
 
-abstract class FollowPageEvent{}
+abstract class FollowPageEvent extends FortEvent{}
 
 class _LoadUsers extends FollowPageEvent{}
   
@@ -83,7 +89,7 @@ LoadUsersEvent(Store<FollowPageState> store) async {
   Api.getUsers().then((users) async {
     store.dispatch(_UsersLoaded(users.map<String>((u) => u.id!).toList()));
 
-    Box<User> userStore = await ConcreteFort().storeBox<User>(FortKey.USER_KEY);
+    Box<User> userStore = await Fort().storeBox<User>(FortKey.USER_KEY);
     for (var user in users) {
       userStore.put(user.id, user);
     }

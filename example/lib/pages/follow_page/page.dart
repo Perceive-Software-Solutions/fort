@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:fort/fort.dart';
 import 'package:fort_example/api/mock_api.dart';
 import 'package:fort_example/models/user.dart';
-import 'package:fort_example/state/concrete_fort.dart';
 import 'package:fort_example/state/fort_keys.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:redux/redux.dart';
@@ -12,7 +12,7 @@ part 'state.dart';
 part 'follow_tile.dart';
 
 class FollowPage extends StatefulWidget {
-  FollowPage({ Key? key }) : super(key: key);
+  const FollowPage({ Key? key }) : super(key: key);
 
   @override
   State<FollowPage> createState() => _FollowPageState();
@@ -21,7 +21,7 @@ class FollowPage extends StatefulWidget {
 class _FollowPageState extends State<FollowPage> {
   
   ///Store
-  final Store<FollowPageState> followPageStore = Store<FollowPageState>(
+  final Tower<FollowPageState> followPageStore = Tower<FollowPageState>(
     followPageReducer,
     initialState: FollowPageState.innitial(),
     middleware: [thunkMiddleware]

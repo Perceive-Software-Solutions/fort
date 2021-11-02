@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:fort/fort.dart';
 import 'package:fort_example/components/user_tile.dart';
 import 'package:fort_example/pages/follow_page/page.dart';
 import 'package:fort_example/api/mock_api.dart';
 import 'package:fort_example/models/user.dart';
-import 'package:fort_example/state/concrete_fort.dart';
 import 'package:fort_example/state/fort_keys.dart';
 import 'package:hive/hive.dart';
 import 'package:redux_persist/redux_persist.dart';
@@ -22,35 +22,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  //Store Persistor
-  final Persistor<HomePageState> persistor = Persistor<HomePageState>(
-    storage: FlutterStorage(location: FlutterSaveLocation.sharedPreferences),
-    serializer: JsonSerializer<HomePageState>(HomePageState.fromJson)
-  );
   
   ///Store
-  late final Store<HomePageState> homePageStore = Store<HomePageState>(
-      homePageReducer,
-      initialState: HomePageState.innitial(),
-      middleware: [persistor.createMiddleware(), thunkMiddleware]
-    );
-
-  @override
-  void initState(){
-    super.initState();
-
-    initialize();
-  }
-
-  Future<void> initialize() async{
-
-    HomePageState? loaded = await persistor.load();
-
-    if(loaded != null){
-      homePageStore.dispatch(SetState(loaded));
-    }
-  }
+  late final Tower<HomePageState> homePageStore = Tower<HomePageState>(
+    homePageReducer,
+    initialState: HomePageState.innitial(),
+    serializer: HomePageState.fromJson
+  );
 
   Widget userList(BuildContext context, List<String> userIDs){
     return ListView.builder(
