@@ -24,9 +24,7 @@ class FollowTile extends StatelessWidget {
 
   Widget buildFollowButtons(BuildContext context, int followers){
 
-    Store<FollowPageState> followPageStore = StoreProvider.of<FollowPageState>(context);
-
-    return Container(
+    return SizedBox(
       width: 150,
       height: 60,
       child: Row(
@@ -37,7 +35,7 @@ class FollowTile extends StatelessWidget {
               icon: Icons.minimize, 
               color: Colors.red, 
               onTap: (){
-                followPageStore.dispatch(UnfollowUserAction(userID));
+                Api.removeFollower(userID);
               }
           ),
           Padding(
@@ -49,7 +47,7 @@ class FollowTile extends StatelessWidget {
               icon: Icons.add, 
               color: Colors.blue, 
               onTap: (){
-                followPageStore.dispatch(FollowUserAction(userID));
+                Api.addFollower(userID);
               }
           ),
         ],

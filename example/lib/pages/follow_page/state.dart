@@ -93,41 +93,41 @@ LoadUsersEvent(Store<FollowPageState> store) async {
 
 }
 
-ThunkAction<FollowPageState> FollowUserAction(String userID){
-  return (Store<FollowPageState> store) async {
-    FollowPageState state = store.state;
-    if(state.loadState == LoadState.LOADED){
+// ThunkAction<FollowPageState> FollowUserAction(String userID){
+//   return (Store<FollowPageState> store) async {
+//     FollowPageState state = store.state;
+//     if(state.loadState == LoadState.LOADED){
 
-      User? followUser = await Api.addFollower(userID);
+//       User? followUser = await Api.addFollower(userID);
       
-      if(followUser != null){
+//       if(followUser != null){
 
-        //Local State
-        Box<User> userStore = await ConcreteFort().storeBox(FortKey.USER_KEY);
-        userStore.put(userID, followUser);
+//         //Local State
+//         Box<User> userStore = await ConcreteFort().storeBox(FortKey.USER_KEY);
+//         userStore.put(userID, followUser);
 
-      }
-    }
-  };
-}
+//       }
+//     }
+//   };
+// }
 
-ThunkAction<FollowPageState> UnfollowUserAction(String userID){
-  return (Store<FollowPageState> store) async {
-    FollowPageState state = store.state;
-    if(state.loadState == LoadState.LOADED){
+// ThunkAction<FollowPageState> UnfollowUserAction(String userID){
+//   return (Store<FollowPageState> store) async {
+//     FollowPageState state = store.state;
+//     if(state.loadState == LoadState.LOADED){
 
-      User? followUser = await Api.removeFollower(userID);
+//       User? followUser = await Api.removeFollower(userID);
 
-      if(followUser != null){
+//       if(followUser != null){
 
-        //Local State
-        Box<User> userStore = await ConcreteFort().storeBox(FortKey.USER_KEY);
-        userStore.put(userID, followUser);
+//         //Local State
+//         Box<User> userStore = await ConcreteFort().storeBox(FortKey.USER_KEY);
+//         userStore.put(userID, followUser);
 
-      }
-    }
-  };
-}
+//       }
+//     }
+//   };
+// }
 
 /*
  

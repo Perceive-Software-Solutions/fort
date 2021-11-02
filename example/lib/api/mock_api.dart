@@ -78,6 +78,10 @@ class Api{
 
     await userDBBox.close();
 
+    //Local State
+    Box<User> userStore = await ConcreteFort().storeBox(FortKey.USER_KEY);
+    userStore.put(userID, apiUser);
+
     //Return
     return apiUser;
 
@@ -107,6 +111,10 @@ class Api{
     await userDBBox.put(userID, apiUser);
     
     await userDBBox.close();
+
+    //Local State
+    Box<User> userStore = await ConcreteFort().storeBox(FortKey.USER_KEY);
+    userStore.put(userID, apiUser);
 
     //Return
     return apiUser;
