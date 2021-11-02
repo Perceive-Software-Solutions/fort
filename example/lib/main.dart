@@ -9,8 +9,8 @@ import 'package:fort_example/pages/home_page/page.dart';
 import 'package:fort_example/state/concrete_fort.dart';
 import 'package:fort_example/state/fort_keys.dart';
 
-void main() {
-  ConcreteFort().register(FortKey.USER_KEY, UserAdapter());
+void main() async {
+  await ConcreteFort().register(FortKey.USER_KEY, UserAdapter());
   runApp(const MyApp());
 }
 

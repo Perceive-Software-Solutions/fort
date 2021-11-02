@@ -7,6 +7,8 @@ import 'package:fort_example/models/user.dart';
 import 'package:fort_example/state/concrete_fort.dart';
 import 'package:fort_example/state/fort_keys.dart';
 import 'package:hive/hive.dart';
+import 'package:redux_persist/redux_persist.dart';
+import 'package:redux_persist_flutter/redux_persist_flutter.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux/redux.dart';
 
@@ -21,20 +23,33 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  ///Store
-  final Store<HomePageState> homePageStore = Store<HomePageState>(
-    homePageReducer,
-    initialState: HomePageState.innitial(),
-    middleware: [thunkMiddleware]
+  //Store Persistor
+  final Persistor<HomePageState> persistor = Persistor<HomePageState>(
+    storage: FlutterStorage(location: FlutterSaveLocation.sharedPreferences),
+    serializer: JsonSerializer<HomePageState>(HomePageState.fromJson)
   );
+  
+  ///Store
+  late final Store<HomePageState> homePageStore = Store<HomePageState>(
+      homePageReducer,
+      initialState: HomePageState.innitial(),
+      middleware: [persistor.createMiddleware(), thunkMiddleware]
+    );
 
   @override
   void initState(){
     super.initState();
-    
-    Future.delayed(const Duration(seconds: 1)).then((value){
-      homePageStore.dispatch(LoadUsersEvent);
-    });
+
+    initialize();
+  }
+
+  Future<void> initialize() async{
+
+    HomePageState? loaded = await persistor.load();
+
+    if(loaded != null){
+      homePageStore.dispatch(SetState(loaded));
+    }
   }
 
   Widget userList(BuildContext context, List<String> userIDs){
@@ -53,6 +68,14 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Follow Page"),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh, color: Colors.white,),
+              onPressed: (){
+                homePageStore.dispatch(LoadUsersEvent);
+              },
+            )
+          ],
         ),
         body: Center(
           child: StoreConnector<HomePageState, HomePageState>(

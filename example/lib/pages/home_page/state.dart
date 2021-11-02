@@ -33,6 +33,20 @@ class HomePageState{
 
   factory HomePageState.innitial() => HomePageState(userIDs: [],);
 
+  static HomePageState fromJson(dynamic json){
+    return HomePageState(
+      userIDs: (json['userIDs'] as List<dynamic>).cast<String>(),
+      loadState: LoadState.values[json['loadState']],
+      errorMessage: json['error']
+    );
+  }
+
+  dynamic toJson() => {
+    'userIDs': userIDs,
+    'loadState': LoadState.values.indexOf(loadState),
+    'error': errorMessage
+  };
+
 }
 
 /*
@@ -47,6 +61,14 @@ class HomePageState{
 */
 
 abstract class HomePageEvent{}
+
+class SetState extends HomePageEvent{
+
+  final HomePageState state;
+
+  SetState(this.state);
+
+}
 
 class _LoadUsers extends HomePageEvent{}
   
@@ -108,8 +130,13 @@ LoadUsersEvent(Store<HomePageState> store) async {
 HomePageState homePageReducer(HomePageState state, dynamic event){
 
   if(event is HomePageEvent){
+
+    if(event is SetState){
+      return event.state;
+    }
+
     //Logic
-    if(state.loadState == LoadState.LOADING){
+    else if(state.loadState == LoadState.LOADING){
       if(event is _UsersLoaded){
         return HomePageState(
           userIDs: event.userIDs,

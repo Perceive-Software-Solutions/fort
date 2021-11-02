@@ -51,6 +51,8 @@ class Api{
       }
     }
 
+    await Future.delayed(const Duration(seconds: 3));
+
     await userDBBox.close();
 
     return users;
