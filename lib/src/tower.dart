@@ -4,7 +4,7 @@ part of '../fort.dart';
 
 typedef SerializationFunction<T extends FortState> = T? Function(dynamic json);
 
-typedef PersistorCallBackFunction<T extends FortState> = Function(T loadedState);
+typedef PersistorCallBackFunction<T extends FortState> = Function(Tower<T> tower, T loadedState);
 
 class Tower<T extends FortState> extends Store<T>{
 
@@ -92,7 +92,7 @@ class Tower<T extends FortState> extends Store<T>{
 
         //Runs any call backs on the persistor
         if(persistorCallBack != null){
-          persistorCallBack!(loadedState);
+          persistorCallBack!(this, loadedState);
         }
       }
 

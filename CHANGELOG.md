@@ -1,3 +1,7 @@
+## [0.0.9] - Fortv0.0.9
+
+* Added tower to persistor callback
+
 ## [0.0.8] - Fortv0.0.8
 
 * Added persistor callback to Tower to handle events after loading state from persistor
