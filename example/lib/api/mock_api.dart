@@ -122,4 +122,8 @@ class Api{
     return apiUser;
   }
 
+  static Future<void> reloadState() async {
+    await Fort().clearBox<User>(FortKey.USER_KEY);
+  }
+
 }

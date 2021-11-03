@@ -41,7 +41,7 @@ class Fort {
 */
 
   //If the value is true, then the box is open
-  Map<String, Type> openBoxes = {};
+  Map<String, Box<dynamic>> openBoxes = {};
 
 
 /*
@@ -75,7 +75,7 @@ class Fort {
       await init();
     }
 
-    if(openBoxes[key] != T){
+    if(openBoxes[key] == null){
       //register the adapter if it is not registered
       registerAdapter(adapter);
     }
@@ -90,13 +90,20 @@ class Fort {
 
   ///Opens a box and returns an open box
   Future<Box<T>> storeBox<T>(String boxKey) async {
+
+    // if(openBoxes[boxKey] == null){
+    //   //Open the box
+    //   Box<T> box = await Hive.openBox<T>(boxKey);
+    //   openBoxes[boxKey] = box;
+    //   return box;
+    // }
     
     try{
-      return box<T>(boxKey);
+      return openBoxes[boxKey] as Box<T>;
     }catch(e){
       //Open the box
       Box<T> box = await Hive.openBox<T>(boxKey);
-      openBoxes[boxKey] = T;
+      openBoxes[boxKey] = box;
       return box;
     }
   }
@@ -106,14 +113,14 @@ class Fort {
     
     if(isOpen<T>(boxKey)){
       //Box already open
-      return Hive.box<T>(boxKey);
+      return openBoxes[boxKey] as Box<T>;
     }
     throw 'Box not open';
   }
 
   ///Returns an open store or null
   ValueListenable<Box<T>> getStoreListener<T>(String boxKey, [List<dynamic>? listenerKeys]) {
-    if(openBoxes[boxKey] == T){
+    if(openBoxes[boxKey] != null){
       //Box already open
       return Hive.box<T>(boxKey).listenable(keys: listenerKeys);
     }
@@ -122,7 +129,11 @@ class Fort {
 
   ///Returns if box is open
   bool isOpen<T>(String boxKey){
-    return openBoxes[boxKey] == T;
+    return openBoxes[boxKey] != null;
   }
-
+  
+  /// Clear individual box
+  Future<void> clearBox<T>(String boxKey) async {
+    await Hive.box<T>(boxKey).clear();
+  }
 }
