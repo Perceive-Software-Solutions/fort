@@ -124,5 +124,9 @@ class Fort {
   bool isOpen<T>(String boxKey){
     return openBoxes[boxKey] == T;
   }
-
+  
+  /// Clea individual box
+  Future<void> clearBox<T>(String boxKey) async {
+    await Hive.box<T>(boxKey).clear();
+  }
 }
