@@ -4,10 +4,16 @@ part of '../fort.dart';
 
 typedef SerializationFunction<T extends FortState> = T? Function(dynamic json);
 
+typedef PersistorCallBackFunction<T extends FortState> = Function(T loadedState);
+
 class Tower<T extends FortState> extends Store<T>{
 
   ///If defined the redux state will persist
   final Persistor<T>? persistor;
+
+  /// Only needed if [persistor] is defined. 
+  /// Runs when if the persistor loads in a state
+  final PersistorCallBackFunction<T>? persistorCallBack;
 
   ///Default Constructor
   factory Tower(
@@ -16,7 +22,8 @@ class Tower<T extends FortState> extends Store<T>{
     List<Middleware<T>> middleware = const [],
     bool syncStream = false,
     bool distinct = false,
-    SerializationFunction<T>? serializer ///When defined creates a persistor
+    SerializationFunction<T>? serializer, ///When defined creates a persistor
+    PersistorCallBackFunction<T>? persistorCallBack 
   }){
 
     Persistor<T>? persistor;
@@ -51,7 +58,8 @@ class Tower<T extends FortState> extends Store<T>{
     List<Middleware<T>> middleware = const [],
     bool syncStream = false,
     bool distinct = false,
-    this.persistor
+    this.persistor,
+    this.persistorCallBack
   }) : super(
     reducer,
     initialState: initialState,
@@ -81,6 +89,11 @@ class Tower<T extends FortState> extends Store<T>{
       if(loadedState != null){
         //Set state wil the new state
         dispatch(SetState(loadedState));
+
+        //Runs any call backs on the persistor
+        if(persistorCallBack != null){
+          persistorCallBack!(loadedState);
+        }
       }
 
     }
