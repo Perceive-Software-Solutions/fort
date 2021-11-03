@@ -1,6 +1,7 @@
 name: fort
 description: An application state management library.
 version: 0.0.8
+homepage: "https://perceivedev.com/#/"
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -11,6 +12,7 @@ dependencies:
     sdk: flutter
   hive: ^2.0.4
   hive_flutter: ^1.1.0
+  redux: ^5.0.0
   flutter_redux: ^0.8.2
   redux_persist: ^0.9.0
   redux_persist_flutter: ^0.9.0
