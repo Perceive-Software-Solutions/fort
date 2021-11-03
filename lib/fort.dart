@@ -27,6 +27,8 @@ class Fort {
 
   factory Fort() => _fort;
 
+  static const String GENERAL_KEY = 'GENERAL-FORT-STORE-KEY';
+
 /*
  
    ____  _        _       
@@ -41,6 +43,7 @@ class Fort {
   //If the value is true, then the box is open
   Map<String, Type> openBoxes = {};
 
+
 /*
  
    _____                 _       
@@ -52,18 +55,29 @@ class Fort {
  
 */
 
+  ///Iniitalizes the fort
+  Future<void> init() async {
+
+    //Registers the storage system in flutter
+    await Hive.initFlutter();
+
+    //Opens the general box
+    await storeBox<dynamic>(GENERAL_KEY);
+
+  }
+
   ///Registers a type adapter to a key and opens the box for the objects. 
   ///Boxes must initlaly be registered before used
   Future<Box<T>> register<T>(String key, TypeAdapter<T> adapter) async {
     
     //Registers the storage system in flutter
     if(openBoxes.isEmpty){
-      await Hive.initFlutter();
+      await init();
     }
 
     if(openBoxes[key] != T){
       //register the adapter if it is not registered
-      Hive.registerAdapter<T>(adapter);
+      registerAdapter(adapter);
     }
     
     //Returns the open box
@@ -71,19 +85,30 @@ class Fort {
 
   }
 
+  ///Must be called after `init`
+  void registerAdapter<T>(TypeAdapter<T> adapter) => Hive.registerAdapter(adapter);
+
   ///Opens a box and returns an open box
   Future<Box<T>> storeBox<T>(String boxKey) async {
     
-    if(openBoxes[boxKey] == T){
-      //Box already open
-      return Hive.box<T>(boxKey);
-    }
-    else{
+    try{
+      return box<T>(boxKey);
+    }catch(e){
       //Open the box
       Box<T> box = await Hive.openBox<T>(boxKey);
       openBoxes[boxKey] = T;
       return box;
     }
+  }
+
+    ///Opens a box and returns an open box
+  Box<T> box<T>(String boxKey) {
+    
+    if(isOpen<T>(boxKey)){
+      //Box already open
+      return Hive.box<T>(boxKey);
+    }
+    throw 'Box not open';
   }
 
   ///Returns an open store or null
@@ -93,6 +118,11 @@ class Fort {
       return Hive.box<T>(boxKey).listenable(keys: listenerKeys);
     }
     throw 'Box Not Open';
+  }
+
+  ///Returns if box is open
+  bool isOpen<T>(String boxKey){
+    return openBoxes[boxKey] == T;
   }
 
 }
