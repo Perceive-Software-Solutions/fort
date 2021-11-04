@@ -18,7 +18,7 @@ enum LoadState {
   ERROR
 }
 
-class FollowPageState extends FortState{
+class FollowPageState extends FortState<FollowPageState>{
 
   final List<String> userIDs;
   final LoadState loadState;
@@ -35,6 +35,12 @@ class FollowPageState extends FortState{
   @override
   toJson() {
     // TODO: implement toJson
+    throw UnimplementedError();
+  }
+
+  @override
+  FortState<FollowPageState> copyWith(FortState<FollowPageState> other) {
+    // TODO: implement copyWith
     throw UnimplementedError();
   }
 

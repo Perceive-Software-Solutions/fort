@@ -1,3 +1,7 @@
+## [0.0.10] - Fortv0.0.10
+
+* Added keep, a new interface to stores coupled with the fort
+
 ## [0.0.9] - Fortv0.0.9
 
 * Added tower to persistor callback

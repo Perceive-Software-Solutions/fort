@@ -19,7 +19,7 @@ enum LoadState {
   ERROR
 }
 
-class HomePageState extends FortState{
+class HomePageState extends FortState<HomePageState>{
 
   final List<String> userIDs;
   final LoadState loadState;
@@ -47,6 +47,12 @@ class HomePageState extends FortState{
     'loadState': LoadState.values.indexOf(loadState),
     'error': errorMessage
   };
+
+  @override
+  FortState<HomePageState> copyWith(FortState other) {
+    // TODO: implement copyWith
+    throw UnimplementedError();
+  }
 
 }
 

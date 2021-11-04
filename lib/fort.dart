@@ -16,6 +16,8 @@ export 'package:redux_thunk/redux_thunk.dart';
 
 part 'src/fort_event.dart';
 part 'src/fort_state.dart';
+part 'src/keep_object.dart';
+part 'src/keep.dart';
 part 'src/tower.dart';
 
 
@@ -28,6 +30,7 @@ class Fort {
   factory Fort() => _fort;
 
   static const String GENERAL_KEY = 'GENERAL-FORT-STORE-KEY';
+  static const String LAZY_KEY = 'LAZY-FORT-STORE-KEY';
 
 /*
  
@@ -42,6 +45,8 @@ class Fort {
 
   //If the value is true, then the box is open
   Map<String, Box<dynamic>> openBoxes = {};
+
+  late LazyBox<dynamic> lazyBox;
 
 
 /*
@@ -63,6 +68,9 @@ class Fort {
 
     //Opens the general box
     await storeBox<dynamic>(GENERAL_KEY);
+
+    //Opens the general lazyBox
+    lazyBox = await Hive.openLazyBox(LAZY_KEY);
 
   }
 

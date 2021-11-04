@@ -2,7 +2,7 @@
 part of '../fort.dart';
 
 ///A class to use to extend all types of Tower States
-abstract class FortState{
+abstract class FortState<T> extends HiveObject{
 
   FortState();
 
@@ -11,4 +11,7 @@ abstract class FortState{
 
   //To json method for persistant storage
   dynamic toJson();
-}
+
+  //Copy with functon
+  FortState<T> copyWith(FortState<T> other);
+} 

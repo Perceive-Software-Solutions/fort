@@ -21,7 +21,7 @@ class FollowPage extends StatefulWidget {
 class _FollowPageState extends State<FollowPage> {
   
   ///Store
-  final Tower<FollowPageState> followPageStore = Tower<FollowPageState>(
+  final Tower<FollowPageState, FollowPageState> followPageStore = Tower<FollowPageState, FollowPageState>(
     followPageReducer,
     initialState: FollowPageState.innitial(),
     middleware: [thunkMiddleware]

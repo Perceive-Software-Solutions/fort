@@ -16,10 +16,19 @@ abstract class FortEvent{}
 */
 
 ///Set state event sets the current state to the one provided
-class SetState extends FortEvent{
+class SetState<T> extends FortEvent{
 
-  final FortState state;
+  final FortState<T> state;
 
   SetState(this.state);
+
+}
+
+///Copy with event
+class CopyStateWith<T> extends FortEvent{
+
+  final FortState<T> state;
+
+  CopyStateWith(this.state);
 
 }
