@@ -4,16 +4,16 @@ part of '../fort.dart';
 
 typedef SerializationFunction<T extends FortState> = T? Function(dynamic json);
 
-typedef PersistorCallBackFunction<T extends FortState<V>, V> = Function(Tower<T, V> tower, T loadedState);
+typedef PersistorCallBackFunction<T extends FortState> = Function(Tower<T> tower, T loadedState);
 
-class Tower<T extends FortState<V>, V> extends Store<T>{
+class Tower<T extends FortState> extends Store<T>{
 
   ///If defined the redux state will persist
   final Persistor<T>? persistor;
 
   /// Only needed if [persistor] is defined. 
   /// Runs when if the persistor loads in a state
-  final PersistorCallBackFunction<T, V>? persistorCallBack;
+  final PersistorCallBackFunction<T>? persistorCallBack;
 
   ///Default Constructor
   factory Tower(
@@ -23,7 +23,7 @@ class Tower<T extends FortState<V>, V> extends Store<T>{
     bool syncStream = false,
     bool distinct = false,
     SerializationFunction<T>? serializer, ///When defined creates a persistor
-    PersistorCallBackFunction<T, V>? persistorCallBack 
+    PersistorCallBackFunction<T>? persistorCallBack 
   }){
 
     Persistor<T>? persistor;
@@ -42,7 +42,7 @@ class Tower<T extends FortState<V>, V> extends Store<T>{
 
     //Default event reducer
     return Tower._(
-      Tower._TowerReducer<T, V>(reducer),
+      Tower._TowerReducer<T, dynamic>(reducer),
       initialState: initialState,
       middleware: middleware,
       syncStream: syncStream,

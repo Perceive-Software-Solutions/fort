@@ -24,7 +24,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   
   ///Store
-  late final Tower<HomePageState, HomePageState> homePageStore = Tower<HomePageState, HomePageState>(
+  late final Tower<HomePageState> homePageStore = Tower<HomePageState>(
     homePageReducer,
     initialState: HomePageState.innitial(),
     serializer: HomePageState.fromJson

@@ -2,7 +2,7 @@
 part of '../fort.dart';
 
 ///A Keep is a type of Tower that comunicates with the lazy boxes within the fort to maintain state syncronization across multiple redux states
-abstract class Keep<T extends FortState<V>, S extends KeepObject, V> extends Store<T>{
+abstract class Keep<T extends FortState<S>, S extends KeepObject> extends Store<T>{
 
   ///Key to the object with type S
   final String objectID;
@@ -19,7 +19,7 @@ abstract class Keep<T extends FortState<V>, S extends KeepObject, V> extends Sto
     bool syncStream = false,
     bool distinct = false,
   }) : super(
-    Tower._TowerReducer<T, V>(reducer),
+    Tower._TowerReducer<T, S>(reducer),
     initialState: initialState,
     middleware: [...middleware, thunkMiddleware],
     syncStream: syncStream,
