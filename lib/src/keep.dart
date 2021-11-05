@@ -25,7 +25,7 @@ abstract class Keep<T extends FortState<S>, S extends KeepObject> extends Store<
     syncStream: syncStream,
     distinct: distinct
   ){
-
+    
     ///Registers the adapter to fort
     Fort().registerAdapter(getStateAdapter);
 

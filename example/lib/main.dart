@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fort/fort.dart';
+import 'package:fort_example/models/hydrated_keep_state.dart';
 
 import 'package:fort_example/models/user.dart';
 import 'package:fort_example/pages/follow_page/page.dart';
@@ -8,6 +9,7 @@ import 'package:fort_example/state/fort_keys.dart';
 
 void main() async {
   await Fort().register(FortKey.USER_KEY, UserAdapter());
+  Fort().registerAdapter(HydratedKeepStatesAdapter());
   runApp(const MyApp());
 }
 

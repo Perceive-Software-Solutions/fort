@@ -95,7 +95,11 @@ class Fort {
   }
 
   ///Must be called after `init`
-  void registerAdapter<T>(TypeAdapter<T> adapter) => Hive.registerAdapter(adapter);
+  void registerAdapter<T>(TypeAdapter<T> adapter){
+    try{
+      Hive.registerAdapter(adapter);
+    }catch(e){}
+  }
 
   ///Opens a box and returns an open box
   Future<Box<T>> storeBox<T>(String boxKey) async {

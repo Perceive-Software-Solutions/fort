@@ -87,16 +87,20 @@ class Tower<T extends FortState> extends Store<T>{
   Future<void> initializeFromPersistor() async {
 
     if(persistor != null){
-      T? loadedState = await persistor!.load();
+      try{
+        T? loadedState = await persistor!.load();
 
-      if(loadedState != null){
-        //Set state wil the new state
-        dispatch(SetState(loadedState));
+        if(loadedState != null){
+          //Set state wil the new state
+          dispatch(SetState(loadedState));
 
-        //Runs any call backs on the persistor
-        if(persistorCallBack != null){
-          persistorCallBack!(this, loadedState);
+          //Runs any call backs on the persistor
+          if(persistorCallBack != null){
+            persistorCallBack!(this, loadedState);
+          }
         }
+      }catch(e){
+        return;
       }
 
     }

@@ -42,8 +42,8 @@ class _FollowTileState extends State<FollowTile> {
               context, 
               icon: Icons.minimize, 
               color: Colors.red, 
-              onTap: (){
-                Api.removeFollower(widget.userID);
+              onTap: () async {
+                keep.dispatch(addFollowerAction);
               }
           ),
           Padding(
@@ -54,8 +54,8 @@ class _FollowTileState extends State<FollowTile> {
               context, 
               icon: Icons.add, 
               color: Colors.blue, 
-              onTap: (){
-                Api.addFollower(widget.userID);
+              onTap: () async {
+                keep.dispatch(removeFollowerAction);
               }
           ),
         ],
