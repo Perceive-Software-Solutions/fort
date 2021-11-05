@@ -2,6 +2,7 @@ import 'package:fort/fort.dart';
 import 'package:fort_example/models/user.dart';
 import 'package:fort_example/state/fort_keys.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 
 class Api{
 
@@ -56,6 +57,19 @@ class Api{
     await userDBBox.close();
 
     return users;
+  }
+
+  static Future<User> getUserByID(String id) async {
+
+    LazyBox<User> userDBBox = await Hive.openLazyBox<User>(user_db);
+
+    if(userDBBox.isEmpty){
+      await _init();
+    }
+
+    User? user = await userDBBox.get(id);
+
+    return user!;
   }
 
   //Add a follower to a user
@@ -124,6 +138,18 @@ class Api{
 
   static Future<void> reloadState() async {
     await Fort().clearBox<User>(FortKey.USER_KEY);
+  }
+
+  static Future<String> hydrate() async {
+    await Future.delayed(const Duration(seconds: 1));
+    return Api._formatNowTime();
+  }
+
+  static String _formatNowTime(){
+    DateTime time = DateTime.now();
+    final DateFormat formatter = DateFormat('yyyy-MM-dd  hh:mm');
+    final String formatted = formatter.format(time);
+    return formatted;
   }
 
 }

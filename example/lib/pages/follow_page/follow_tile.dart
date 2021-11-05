@@ -1,11 +1,19 @@
 
 part of 'page.dart';
 
-class FollowTile extends StatelessWidget {
+class FollowTile extends StatefulWidget {
 
   final String userID;
 
   const FollowTile({ Key? key, required this.userID }) : super(key: key);
+
+  @override
+  State<FollowTile> createState() => _FollowTileState();
+}
+
+class _FollowTileState extends State<FollowTile> {
+
+  late final UserKeep keep = UserKeep(widget.userID);
 
   Widget roundButton(BuildContext contex, {required IconData icon, required Color color, required Function() onTap}){
       return GestureDetector(
@@ -35,7 +43,7 @@ class FollowTile extends StatelessWidget {
               icon: Icons.minimize, 
               color: Colors.red, 
               onTap: (){
-                Api.removeFollower(userID);
+                Api.removeFollower(widget.userID);
               }
           ),
           Padding(
@@ -47,7 +55,7 @@ class FollowTile extends StatelessWidget {
               icon: Icons.add, 
               color: Colors.blue, 
               onTap: (){
-                Api.addFollower(userID);
+                Api.addFollower(widget.userID);
               }
           ),
         ],
@@ -64,6 +72,15 @@ class FollowTile extends StatelessWidget {
 
     return ListTile(
       title: Text("UserID: ${user.id}"),
+      subtitle: StoreConnector<UserKeepState, UserKeepState>(
+        converter: (store) => store.state,
+        builder: (context, state) {
+
+          Color textColor = state.state == HydratedKeepStates.DEACTIVE ? Colors.grey[600]! : Colors.blue;
+
+          return Text(state.hydrate ?? "Hydrating...", style: TextStyle(color: textColor),);
+        }
+      ),
       trailing: Padding(
         padding: const EdgeInsets.all(8.0),
         child: buildFollowButtons(context, user.follows ?? 0),
@@ -73,15 +90,18 @@ class FollowTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 1,
-      color: Colors.yellow[50],
-      child: ValueListenableBuilder<Box<User>>(
-        valueListenable: Fort().getStoreListener(FortKey.USER_KEY, [userID]),
-        builder: (context, box, child) {
-          User? user = box.get(userID);
-          return buildTile(context, user);
-        },
+    return StoreProvider(
+      store: keep,
+      child: Card(
+        elevation: 1,
+        color: Colors.yellow[50],
+        child: ValueListenableBuilder<Box<User>>(
+          valueListenable: Fort().getStoreListener(FortKey.USER_KEY, [widget.userID]),
+          builder: (context, box, child) {
+            User? user = box.get(widget.userID);
+            return buildTile(context, user);
+          },
+        ),
       ),
     );
   }

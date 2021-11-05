@@ -1,40 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'state.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserAdapter extends TypeAdapter<User> {
+class UserKeepStateAdapter extends TypeAdapter<UserKeepState> {
   @override
-  final int typeId = 1;
+  final int typeId = 3;
 
   @override
-  User read(BinaryReader reader) {
+  UserKeepState read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return User()
-      ..name = fields[0] as String?
-      ..id = fields[1] as String?
-      ..follows = fields[2] as int?
-      ..hydratedStateKey = fields[3] as dynamic;
+    return UserKeepState(
+      state: fields[0] as HydratedKeepStates,
+      hydrate: fields[1] as String?,
+    );
   }
 
   @override
-  void write(BinaryWriter writer, User obj) {
+  void write(BinaryWriter writer, UserKeepState obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.name)
-      ..writeByte(1)
-      ..write(obj.id)
       ..writeByte(2)
-      ..write(obj.follows)
-      ..writeByte(3)
-      ..write(obj.hydratedStateKey);
+      ..writeByte(0)
+      ..write(obj.state)
+      ..writeByte(1)
+      ..write(obj.hydrate);
   }
 
   @override
@@ -43,7 +38,7 @@ class UserAdapter extends TypeAdapter<User> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserAdapter &&
+      other is UserKeepStateAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
