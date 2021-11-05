@@ -145,9 +145,45 @@ class Fort {
   bool isOpen<T>(String boxKey){
     return openBoxes[boxKey] != null;
   }
-  
+
   /// Clear individual box
-  Future<void> clearBox<T>(String boxKey) async {
-    await Hive.box<T>(boxKey).clear();
+  /// Box Will remain open after being cleared
+  Future<void> clearBox(String boxKey) async {
+    try{
+      await openBoxes[boxKey]!.clear();
+    }catch(e){
+      throw("Trying to close a box that is not contained inside of openBoxes");
+    }
+  }
+
+  /// Clear individual box
+  /// Box will be closed after it is cleared
+  Future<void> deleteBox<T>(String boxKey) async {
+    try{
+      await openBoxes[boxKey]!.deleteFromDisk();
+    }catch(e){
+      throw("Trying to delete a box that is not contained inside of openBoxes");
+    }
+  }
+
+  /// Clears everything inside the Fort except
+  /// Does not clear Boxes that contain the [GENERAL_KEY]
+  /// Boxes will remain open even after the Fort is cleared so they
+  /// can still be access synchronously
+  Future<void> clearFort() async {
+    Iterable<String> keys = openBoxes.keys.skipWhile((value) => value == GENERAL_KEY);
+    for(String key in keys){
+      await clearBox(key);
+    }
+  }
+
+
+  /// Deletes everything inside the Fort
+  /// Boxes will be closed after they are cleared
+  /// Deletes boxes that are reference from the [GENERAL_KEY]
+  Future<void> deleteFort() async {
+    for(String key in openBoxes.keys){
+      await deleteBox(key);
+    }
   }
 }

@@ -76,8 +76,8 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: (){
-            Api.reloadState();
+          onPressed: () async {
+            await Fort().clearFort();
           },
         ),
       ),

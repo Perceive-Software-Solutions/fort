@@ -157,9 +157,9 @@ class Api{
     return apiUser;
   }
 
-  static Future<void> reloadState() async {
-    await Fort().clearBox<User>(FortKey.USER_KEY);
-  }
+  // static Future<void> reloadState() async {
+  //   await Fort().clearBox(FortKey.USER_KEY);
+  // }
 
   ///DO NOT USE KEEPS INSIDE OF HYDRATERS
   static Future<int> hydrateFollowers(String objectID) async {
