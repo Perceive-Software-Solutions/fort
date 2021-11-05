@@ -17,19 +17,22 @@ class UserKeepStateAdapter extends TypeAdapter<UserKeepState> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return UserKeepState(
-      state: fields[0] as HydratedKeepStates,
-      hydrate: fields[1] as String?,
+      state: fields[0] as HydratedKeepStates?,
+      hydratedTime: fields[1] as String?,
+      follows: fields[2] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserKeepState obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.state)
       ..writeByte(1)
-      ..write(obj.hydrate);
+      ..write(obj.hydratedTime)
+      ..writeByte(2)
+      ..write(obj.follows);
   }
 
   @override

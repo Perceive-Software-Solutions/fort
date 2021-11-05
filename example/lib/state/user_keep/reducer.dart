@@ -43,19 +43,22 @@ abstract class UserEvent extends FortEvent{}
 */
 
 void addFollowerAction(Store<UserKeepState> store) async {
-  await Api.addFollower((store as UserKeep).objectID);
+  User? user = await Api.addFollower((store as UserKeep).objectID);
 
-  store.dispatch(SetState(UserKeepState(
+  UserKeepState newState = store.state.copyWith(UserKeepState(
     state: HydratedKeepStates.ACTIVE,
-    hydrate: await Api.hydrate()
-  )));
+    follows: user!.follows
+  )) as UserKeepState;
+
+  store.dispatch(store.storeAction(newState));
 }
 
 void removeFollowerAction(Store<UserKeepState> store) async {
-  await Api.removeFollower((store as UserKeep).objectID);
+  User? user = await Api.removeFollower((store as UserKeep).objectID);
 
-  store.dispatch(SetState(UserKeepState(
+  store.dispatch(store.storeAction(UserKeepState(
     state: HydratedKeepStates.ACTIVE,
-    hydrate: await Api.hydrate()
+    hydratedTime: await Api.hydrate(),
+    follows: user!.follows
   )));
 }

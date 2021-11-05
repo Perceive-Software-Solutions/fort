@@ -27,25 +27,36 @@ class UserKeepState extends FortState<User>{
   
   ///The condition of the state
   @HiveField(0)
-  final HydratedKeepStates state;
+  final HydratedKeepStates? state;
   
   @HiveField(1)
-  String? hydrate;
+  String? hydratedTime;
+
+  @HiveField(2)
+  int? follows;
 
   /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~ TOWER ~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
   UserKeepState({
-    this.state = HydratedKeepStates.DEACTIVE,
-    this.hydrate
+    this.state,
+    this.hydratedTime,
+    this.follows
   });
 
-  factory UserKeepState.initial() => UserKeepState();
+  factory UserKeepState.initial() => UserKeepState(state: HydratedKeepStates.DEACTIVE);
 
   @override
   toJson() => {};
 
   @override
   FortState<User> copyWith(FortState<User> other) {
+    if(other is UserKeepState){
+      return UserKeepState(
+        state: other.state ?? state,
+        hydratedTime: other.hydratedTime ?? hydratedTime,
+        follows: other.follows ?? follows
+      );
+    }
     return this;
   }
 }

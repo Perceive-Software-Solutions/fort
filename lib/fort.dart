@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -17,7 +19,6 @@ export 'package:redux_thunk/redux_thunk.dart';
 
 part 'src/fort_event.dart';
 part 'src/fort_state.dart';
-part 'src/keep_object.dart';
 part 'src/keep.dart';
 part 'src/tower.dart';
 

@@ -1,3 +1,10 @@
+## [0.1.0] - Fort v0.1.0
+
+* Completed example with Keep
+* Hotfixes for Keep
+* Removed KeepObject
+* Added Dry Keep
+
 ## [0.0.11] - Fort v0.0.11
 
 * Simplified keep and tower interface

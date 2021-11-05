@@ -1,6 +1,8 @@
 import 'package:fort/fort.dart';
+import 'package:fort_example/models/hydrated_keep_state.dart';
 import 'package:fort_example/models/user.dart';
 import 'package:fort_example/state/fort_keys.dart';
+import 'package:fort_example/state/user_keep/state.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
@@ -49,6 +51,25 @@ class Api{
       User? user = await userDBBox.get("$i");
       if(user != null){
         users.add(user);
+
+        //Hydrated data already in the model? make sure its a dry keep 
+        //PRE HYDRATE
+        final keep = UserKeep.dry(user.id!, user);
+        bool preStored = await keep.awaitHydrate;
+        if(keep.state.state == HydratedKeepStates.ACTIVE){
+          UserKeepState newState = keep.state.copyWith(UserKeepState(
+            follows: user.follows ?? 0,
+          )) as UserKeepState;
+          keep.dispatchStore(newState);
+        }
+        else{
+          UserKeepState newState = UserKeepState(
+            state: HydratedKeepStates.ACTIVE,
+            hydratedTime: _formatNowTime(),
+            follows: user.follows ?? 0,
+          );
+          keep.dispatchStore(newState);
+        }
       }
     }
 
@@ -138,6 +159,12 @@ class Api{
 
   static Future<void> reloadState() async {
     await Fort().clearBox<User>(FortKey.USER_KEY);
+  }
+
+  ///DO NOT USE KEEPS INSIDE OF HYDRATERS
+  static Future<int> hydrateFollowers(String objectID) async {
+    User? user = await Api.getUserByID(objectID);
+    return user.follows ?? 0;
   }
 
   static Future<String> hydrate() async {

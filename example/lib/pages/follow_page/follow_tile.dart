@@ -15,7 +15,7 @@ class _FollowTileState extends State<FollowTile> {
 
   late final UserKeep keep = UserKeep(widget.userID);
 
-  Widget roundButton(BuildContext contex, {required IconData icon, required Color color, required Function() onTap}){
+  Widget roundButton(BuildContext contex, {required IconData icon, required Color color, Function()? onTap}){
       return GestureDetector(
         child: Container(
             height: 30,
@@ -30,36 +30,46 @@ class _FollowTileState extends State<FollowTile> {
       );
   }
 
-  Widget buildFollowButtons(BuildContext context, int followers){
+  Widget buildFollowButtons(BuildContext context){
 
-    return SizedBox(
-      width: 150,
-      height: 60,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          roundButton(
-              context, 
-              icon: Icons.minimize, 
-              color: Colors.red, 
-              onTap: () async {
-                keep.dispatch(addFollowerAction);
-              }
+    return StoreConnector<UserKeepState, UserKeepState>(
+      converter: (store) => store.state,
+      builder: (context, state) {
+
+        Color textColor = state.state == HydratedKeepStates.ACTIVE ? Colors.blue : Colors.grey[600]!;
+        String follows = "${state.follows ?? "..."}";
+
+        return SizedBox(
+          width: 150,
+          height: 60,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              roundButton(
+                  context, 
+                  icon: Icons.minimize, 
+                  color: Colors.red, 
+                  onTap: state.state == HydratedKeepStates.ACTIVE ? () {
+                    keep.dispatch(removeFollowerAction);
+                  } : null
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(follows, style: TextStyle(fontWeight: FontWeight.bold, color: textColor),),
+                
+              ),
+              roundButton(
+                  context, 
+                  icon: Icons.add, 
+                  color: Colors.blue, 
+                  onTap: state.state == HydratedKeepStates.ACTIVE ? () {
+                    keep.dispatch(addFollowerAction);
+                  } : null
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text("$followers", style: const TextStyle(fontWeight: FontWeight.bold),),
-          ),
-          roundButton(
-              context, 
-              icon: Icons.add, 
-              color: Colors.blue, 
-              onTap: () async {
-                keep.dispatch(removeFollowerAction);
-              }
-          ),
-        ],
-      ),
+        );
+      }
     );
   }
 
@@ -78,12 +88,12 @@ class _FollowTileState extends State<FollowTile> {
 
           Color textColor = state.state == HydratedKeepStates.DEACTIVE ? Colors.grey[600]! : Colors.blue;
 
-          return Text(state.hydrate ?? "Hydrating...", style: TextStyle(color: textColor),);
+          return Text(state.hydratedTime ?? "Hydrating...", style: TextStyle(color: textColor),);
         }
       ),
       trailing: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: buildFollowButtons(context, user.follows ?? 0),
+        child: buildFollowButtons(context),
       ),
     );
   }

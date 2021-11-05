@@ -40,7 +40,7 @@ class _UserTileState extends State<UserTile> {
 
           Color textColor = state.state == HydratedKeepStates.DEACTIVE ? Colors.grey[600]! : Colors.blue;
 
-          return Text(state.hydrate ?? "Hydrating...", style: TextStyle(color: textColor),);
+          return Text(state.hydratedTime ?? "Hydrating...", style: TextStyle(color: textColor),);
         }
       ),
       onTap: () {

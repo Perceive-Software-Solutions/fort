@@ -56,7 +56,7 @@ class _UserPageState extends State<UserPage> {
 
                         Color textColor = state.state == HydratedKeepStates.DEACTIVE ? Colors.grey[600]! : Colors.blue;
 
-                        return Text(state.hydrate ?? "Hydrating...", style: TextStyle(color: textColor),);
+                        return Text(state.hydratedTime ?? "Hydrating...", style: TextStyle(color: textColor),);
                       }
                     ),
 
@@ -70,7 +70,7 @@ class _UserPageState extends State<UserPage> {
                         child: TextButton(
                           child: const Icon(Icons.add, color: Colors.white),
                           onPressed: (){
-                            Api.addFollower(widget.userID);
+                            keep.dispatch(addFollowerAction);
                           },
                         ),
                       ),
@@ -95,7 +95,7 @@ class _UserPageState extends State<UserPage> {
                         child: TextButton(
                           child: const Icon(Icons.remove, color: Colors.white),
                           onPressed: (){
-                            Api.removeFollower(widget.userID);
+                            keep.dispatch(removeFollowerAction);
                           },
                         ),
                       ),
