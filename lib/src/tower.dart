@@ -38,7 +38,7 @@ class Tower<T extends FortState> extends Store<T>{
     }
 
     //Adds thunk middleware
-    middleware.add(thunkMiddleware);
+    middleware = [thunkMiddleware, ...middleware];
 
     //Default event reducer
     return Tower._(
