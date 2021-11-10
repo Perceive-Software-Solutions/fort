@@ -1,3 +1,7 @@
+## [0.1.2] - Fort v0.1.2
+
+* Updated homepage
+
 ## [0.1.1-hotfix.1] - Fort v0.1.1-hotfix.1
 
 * Fixed small bug with Tower middleware

@@ -1,7 +1,7 @@
 name: fort
 description: An application state management library.
-version: 0.1.1-hotfix.1
-homepage: "https://perceivedev.com/#/"
+version: 0.1.2
+homepage: "https://github.com/Perceive-Software-Solutions/fort"
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
