@@ -4,31 +4,31 @@ part of '../fort.dart';
 
 typedef SerializationFunction<T extends FortState> = T? Function(dynamic json);
 
-typedef PersistorCallBackFunction<T extends FortState> = Function(Tower<T> tower, T loadedState);
+typedef PersistorCallBackFunction<T, S extends FortState<T>> = Function(Tower<T, S> tower, S loadedState);
 
-class Tower<T extends FortState> extends Store<T>{
+class Tower<T, S extends FortState<T>> extends Store<S>{
 
   ///If defined the redux state will persist
-  final Persistor<T>? persistor;
+  final Persistor<S>? persistor;
 
   /// Only needed if [persistor] is defined. 
   /// Runs when if the persistor loads in a state
-  final PersistorCallBackFunction<T>? persistorCallBack;
+  final PersistorCallBackFunction<T, S>? persistorCallBack;
 
   ///Default Constructor
   factory Tower(
-    Reducer<T> reducer, {
-    required T initialState,
-    List<Middleware<T>> middleware = const [],
+    Reducer<S> reducer, {
+    required S initialState,
+    List<Middleware<S>> middleware = const [],
     bool syncStream = false,
     bool distinct = false,
-    SerializationFunction<T>? serializer, ///When defined creates a persistor
-    PersistorCallBackFunction<T>? persistorCallBack 
+    SerializationFunction<S>? serializer, ///When defined creates a persistor
+    PersistorCallBackFunction<T, S>? persistorCallBack 
   }){
 
-    Persistor<T>? persistor;
+    Persistor<S>? persistor;
     if(serializer != null){
-      persistor = Persistor<T>(
+      persistor = Persistor<S>(
         storage: FlutterStorage(location: FlutterSaveLocation.sharedPreferences),
         serializer: JsonSerializer(serializer)
       );
@@ -42,7 +42,7 @@ class Tower<T extends FortState> extends Store<T>{
 
     //Default event reducer
     return Tower._(
-      Tower._TowerReducer<T, dynamic>(reducer),
+      Tower._TowerReducer<T, S>(reducer),
       initialState: initialState,
       middleware: middleware,
       syncStream: syncStream,
@@ -53,9 +53,9 @@ class Tower<T extends FortState> extends Store<T>{
 
   ///Private constructor
   Tower._(
-    Reducer<T> reducer, {
-    required T initialState,
-    List<Middleware<T>> middleware = const [],
+    Reducer<S> reducer, {
+    required S initialState,
+    List<Middleware<S>> middleware = const [],
     bool syncStream = false,
     bool distinct = false,
     this.persistor,
@@ -70,14 +70,14 @@ class Tower<T extends FortState> extends Store<T>{
     initializeFromPersistor();
   }
 
-  static Reducer<T> _TowerReducer<T extends FortState<V>, V>(Reducer<T> reducer){
-    return (T state, dynamic event){
+  static Reducer<S> _TowerReducer<T, S extends FortState<T>>(Reducer<S> reducer){
+    return (S state, dynamic event){
 
       if(event is SetState){
-        return event.state as T;
+        return event.state as S;
       }
-      else if(event is CopyStateWith<V>){
-        return state.copyWith(event.state) as T;
+      else if(event is CopyStateWith<T>){
+        return state.copyWith(event.state) as S;
       }
 
       return reducer(state, event);
@@ -88,7 +88,7 @@ class Tower<T extends FortState> extends Store<T>{
 
     if(persistor != null){
       try{
-        T? loadedState = await persistor!.load();
+        S? loadedState = await persistor!.load();
 
         if(loadedState != null){
           //Set state wil the new state

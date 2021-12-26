@@ -19,7 +19,6 @@ export 'package:redux_thunk/redux_thunk.dart';
 
 part 'src/fort_event.dart';
 part 'src/fort_state.dart';
-part 'src/keep.dart';
 part 'src/tower.dart';
 
 

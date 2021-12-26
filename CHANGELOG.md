@@ -1,3 +1,9 @@
+## [0.1.3] - Fort v0.1.3
+
+* Removed Keep
+* Removed Example
+* Added additional general varaible to tower.
+
 ## [0.1.2] - Fort v0.1.2
 
 * Updated homepage
